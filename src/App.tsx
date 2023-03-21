@@ -1,17 +1,18 @@
-import { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Inviter, Session, SessionState, UserAgent, UserAgentOptions } from "sip.js";
 import "./App.css";
 
 const sipAccount = {
-  domain: "",
-  websocket: "",
-  extension: "",
-  password: "",
+  domain: "vrsclient.ttrs.in.th",
+  websocket: "wss://vrsclient.ttrs.in.th:4443/ws",
+  extension: "1429900148716",
+  password: "xCFT5pxcd2h7Safp0FoZ",
 };
 
 function App() {
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
+  const [callDestination, setCallDestination] = useState("");
 
   const handleRegister = () => {
     const userAgentOptions: UserAgentOptions = {
@@ -21,13 +22,25 @@ function App() {
       transportOptions: {
         server: sipAccount.websocket,
       },
+      sessionDescriptionHandlerFactoryOptions: {
+        iceGatheringTimeout: 500,
+        peerConnectionConfiguration: {
+          iceServers: [
+            {
+              urls: "turn:turn.ttrs.in.th?transport=tcp",
+              username: "turn01",
+              credential: "Test1234",
+            },
+          ],
+          iceTransportPolicy: "all",
+        },
+      },
     };
 
     const userAgent = new UserAgent(userAgentOptions);
 
     userAgent.start().then(() => {
-      // Set target destination (callee)
-      const target = UserAgent.makeURI("sip:" + "9999" + "@" + sipAccount.domain);
+      const target = UserAgent.makeURI("sip:" + callDestination + "@" + sipAccount.domain);
       if (!target) {
         throw new Error("Failed to create target URI.");
       }
@@ -38,13 +51,13 @@ function App() {
         },
       });
 
-      // Handle outgoing session state changes
       inviter.stateChange.addListener((newState) => {
         switch (newState) {
           case SessionState.Establishing:
             // Session is establishing
             break;
           case SessionState.Established:
+            setupRemoteMedia(inviter);
             // Session has been established
             break;
           case SessionState.Terminated:
@@ -68,30 +81,45 @@ function App() {
 
   const setupRemoteMedia = (session: Session) => {
     const remoteStream = new MediaStream();
+    const localStream = new MediaStream();
     if (session.sessionDescriptionHandler !== undefined) {
-      const { sessionDescriptionHandler } = session;
-      sessionDescriptionHandler: SIP.Web.sessionDescriptionHandler;
-      sessionDescriptionHandler.peerConnection;
-      // session.sessionDescriptionHandler.peerConnection.getReceivers().forEach((receiver: RTCRtpReceiver) => {
-      //   if (receiver.track) {
-      //     remoteStream.addTrack(receiver.track);
-      //   }
-      // });
+      // @ts-ignore
+      session.sessionDescriptionHandler.peerConnection.getSenders().forEach((sender: RTCRtpSender) => {
+        if (sender.track) {
+          localStream.addTrack(sender.track);
+        }
+      });
+      // @ts-ignore
+      session.sessionDescriptionHandler.peerConnection.getReceivers().forEach((receiver: RTCRtpReceiver) => {
+        if (receiver.track) {
+          remoteStream.addTrack(receiver.track);
+        }
+      });
     }
 
+    if (localVideoRef.current !== null) {
+      localVideoRef.current.srcObject = localStream;
+    }
     if (remoteVideoRef.current !== null) {
       remoteVideoRef.current.srcObject = remoteStream;
     }
   };
 
+  const handleChangeDestination = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCallDestination(event.target.value);
+  };
+
   return (
     <div className="App">
-      <button onClick={handleRegister}>Register</button>
-      <div className="local-video">
-        <video ref={localVideoRef} autoPlay playsInline />
-      </div>
-      <div className="remote-video">
-        <video ref={remoteVideoRef} autoPlay playsInline />
+      <button onClick={handleRegister}>Register && Call {callDestination}</button>
+      <input type="text" onChange={handleChangeDestination} />
+      <div className="video-section">
+        <div className="local-video">
+          <video controls={false} ref={localVideoRef} autoPlay playsInline />
+        </div>
+        <div className="remote-video">
+          <video controls={false} ref={remoteVideoRef} autoPlay playsInline />
+        </div>
       </div>
     </div>
   );
