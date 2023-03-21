@@ -32,8 +32,6 @@ function App() {
               credential: "Test1234",
             },
           ],
-          iceTransportPolicy: "all",
-          bundlePolicy: "max-bundle",
         },
       },
     };
