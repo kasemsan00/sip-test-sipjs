@@ -33,6 +33,7 @@ function App() {
             },
           ],
           iceTransportPolicy: "all",
+          bundlePolicy: "max-bundle",
         },
       },
     };
