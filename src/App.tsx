@@ -6,7 +6,7 @@ const sipAccount = {
   domain: "vrsclient.ttrs.in.th",
   websocket: "wss://vrsclient.ttrs.in.th:4443/ws",
   extension: "1429900148716",
-  password: "xCFT5pxcd2h7Safp0FoZ",
+  password: "ALu5du7cP6hqqJhZbJoL",
 };
 
 function App() {
