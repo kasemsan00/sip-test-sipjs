@@ -40,3 +40,14 @@
 .read-the-docs {
   color: #888;
 }
+.local-video,
+.local-video > video {
+  width: 400px;
+  height: 400px;
+}
+
+.remote-video,
+.remote-video > video {
+  width: 400px;
+  height: 400px;
+}
