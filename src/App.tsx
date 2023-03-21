@@ -25,15 +25,25 @@ export default function App() {
       sessionDescriptionHandlerFactoryOptions: {
         iceGatheringTimeout: 3,
         peerConnectionConfiguration: {
-          iceServers: [
+          ice_servers: [
             {
-              urls: "turn:turn.ttrs.in.th?transport=tcp",
-              username: "turn01",
-              credential: "Test1234",
+              username: "dc2d2894d5a9023620c467b0e71cfa6a35457e6679785ed6ae9856fe5bdfa269",
+              credential: "tE2DajzSJwnsSbc123",
+              urls: "turn:global.turn.twilio.com:3478?transport=udp",
+            },
+            {
+              username: "dc2d2894d5a9023620c467b0e71cfa6a35457e6679785ed6ae9856fe5bdfa269",
+              credential: "tE2DajzSJwnsSbc123",
+              urls: "turn:global.turn.twilio.com:3478?transport=tcp",
+            },
+            {
+              username: "dc2d2894d5a9023620c467b0e71cfa6a35457e6679785ed6ae9856fe5bdfa269",
+              credential: "tE2DajzSJwnsSbc123",
+              urls: "turn:global.turn.twilio.com:443?transport=tcp",
             },
           ],
           // bundlePolicy: "max-compat",
-          iceTransportPolicy: "relay",
+          // iceTransportPolicy: "relay",
         },
       },
     };
