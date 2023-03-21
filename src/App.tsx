@@ -9,10 +9,10 @@ const sipAccount = {
   password: "ALu5du7cP6hqqJhZbJoL",
 };
 
-function App() {
+export default function App() {
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
-  const [callDestination, setCallDestination] = useState("");
+  const [callDestination, setCallDestination] = useState("14131");
 
   const handleRegister = () => {
     const userAgentOptions: UserAgentOptions = {
@@ -23,7 +23,7 @@ function App() {
         server: sipAccount.websocket,
       },
       sessionDescriptionHandlerFactoryOptions: {
-        iceGatheringTimeout: 500,
+        iceGatheringTimeout: 3,
         peerConnectionConfiguration: {
           iceServers: [
             {
@@ -32,6 +32,7 @@ function App() {
               credential: "Test1234",
             },
           ],
+          bundlePolicy: "max-compat",
         },
       },
     };
@@ -123,5 +124,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
