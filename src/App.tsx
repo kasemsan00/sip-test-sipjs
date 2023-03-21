@@ -32,7 +32,8 @@ export default function App() {
               credential: "Test1234",
             },
           ],
-          bundlePolicy: "max-compat",
+          // bundlePolicy: "max-compat",
+          iceTransportPolicy: "relay",
         },
       },
     };
