@@ -115,7 +115,7 @@ function App() {
       <input type="text" onChange={handleChangeDestination} />
       <div className="video-section">
         <div className="local-video">
-          <video controls={false} ref={localVideoRef} autoPlay playsInline />
+          <video controls={false} ref={localVideoRef} autoPlay playsInline muted />
         </div>
         <div className="remote-video">
           <video controls={false} ref={remoteVideoRef} autoPlay playsInline />
