@@ -42,8 +42,6 @@ export default function App() {
               urls: "turn:global.turn.twilio.com:443?transport=tcp",
             },
           ],
-          // bundlePolicy: "max-compat",
-          // iceTransportPolicy: "relay",
         },
       },
     };
