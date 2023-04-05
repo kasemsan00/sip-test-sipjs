@@ -126,7 +126,7 @@ export default function App() {
   return (
     <div className="main">
       <div className="sip-detail">
-        <div>Library SipJS</div>
+        <div className="library">SipJS</div>
         <div>{sipAccount.extension + "@" + sipAccount.domain}</div>
       </div>
       <div className="sip-call">

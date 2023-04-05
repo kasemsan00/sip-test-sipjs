@@ -37,6 +37,9 @@
   flex-direction: column;
   gap: 20px;
 }
+.library {
+  font-weight: bold;
+}
 .card {
   padding: 2em;
 }
