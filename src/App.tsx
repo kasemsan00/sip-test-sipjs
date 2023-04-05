@@ -8,6 +8,23 @@ const sipAccount = {
   extension: "3568143622000",
   password: "test1234",
 };
+const iceServer = [
+  {
+    username: "dc2d2894d5a9023620c467b0e71cfa6a35457e6679785ed6ae9856fe5bdfa269",
+    credential: "tE2DajzSJwnsSbc123",
+    urls: "turn:global.turn.twilio.com:3478?transport=udp",
+  },
+  {
+    username: "dc2d2894d5a9023620c467b0e71cfa6a35457e6679785ed6ae9856fe5bdfa269",
+    credential: "tE2DajzSJwnsSbc123",
+    urls: "turn:global.turn.twilio.com:3478?transport=tcp",
+  },
+  {
+    username: "dc2d2894d5a9023620c467b0e71cfa6a35457e6679785ed6ae9856fe5bdfa269",
+    credential: "tE2DajzSJwnsSbc123",
+    urls: "turn:global.turn.twilio.com:443?transport=tcp",
+  },
+];
 
 export default function App() {
   const localVideoRef = useRef<HTMLVideoElement>(null);
@@ -26,23 +43,7 @@ export default function App() {
       sessionDescriptionHandlerFactoryOptions: {
         iceGatheringTimeout: 3,
         peerConnectionConfiguration: {
-          ice_servers: [
-            {
-              username: "dc2d2894d5a9023620c467b0e71cfa6a35457e6679785ed6ae9856fe5bdfa269",
-              credential: "tE2DajzSJwnsSbc123",
-              urls: "turn:global.turn.twilio.com:3478?transport=udp",
-            },
-            {
-              username: "dc2d2894d5a9023620c467b0e71cfa6a35457e6679785ed6ae9856fe5bdfa269",
-              credential: "tE2DajzSJwnsSbc123",
-              urls: "turn:global.turn.twilio.com:3478?transport=tcp",
-            },
-            {
-              username: "dc2d2894d5a9023620c467b0e71cfa6a35457e6679785ed6ae9856fe5bdfa269",
-              credential: "tE2DajzSJwnsSbc123",
-              urls: "turn:global.turn.twilio.com:443?transport=tcp",
-            },
-          ],
+          ice_servers: iceServer,
         },
       },
     };
@@ -103,10 +104,8 @@ export default function App() {
         }
       });
     }
-    if (localVideoRef.current !== null) {
+    if (localVideoRef.current !== null && remoteVideoRef.current !== null) {
       localVideoRef.current.srcObject = localStream;
-    }
-    if (remoteVideoRef.current !== null) {
       remoteVideoRef.current.srcObject = remoteStream;
     }
   };
