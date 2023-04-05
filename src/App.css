@@ -80,3 +80,11 @@
   justify-content: center;
   gap: 10px;
 }
+.register-btn {
+  background-color: #5fcb45;
+  width: 200px;
+}
+.hangup-btn {
+  background-color: #cb9535;
+  width: 200px;
+}

@@ -130,9 +130,13 @@ export default function App() {
         <div>{sipAccount.extension + "@" + sipAccount.domain}</div>
       </div>
       <div className="sip-call">
-        <button onClick={HandleRegister}>Register && Call</button>
+        <button className="register-btn" onClick={HandleRegister}>
+          Register & Call
+        </button>
         <input className="call-destination-number" type="text" onChange={HandleChangeDestination} placeholder={callDestination} />
-        <button onClick={HandleHangUp}>Hangup</button>
+        <button className="hangup-btn" onClick={HandleHangUp}>
+          Hangup
+        </button>
       </div>
       <div className="video-section">
         <div className="local-video">
