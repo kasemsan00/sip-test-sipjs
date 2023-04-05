@@ -3,10 +3,10 @@ import { Inviter, Session, SessionState, UserAgent, UserAgentOptions } from "sip
 import "./App.css";
 
 const sipAccount = {
-  domain: "vrsclient.ttrs.in.th",
-  websocket: "wss://vrsclient.ttrs.in.th:4443/ws",
-  extension: "1429900148716",
-  password: "ALu5du7cP6hqqJhZbJoL",
+  domain: "test-135-sip.ttrs.in.th",
+  websocket: "wss://test-135-sip.ttrs.in.th:8089/ws",
+  extension: "3568143622000",
+  password: "test1234",
 };
 
 export default function App() {
@@ -53,13 +53,11 @@ export default function App() {
       if (!target) {
         throw new Error("Failed to create target URI.");
       }
-
       const inviter = new Inviter(userAgent, target, {
         sessionDescriptionHandlerOptions: {
           constraints: { audio: true, video: true },
         },
       });
-
       inviter.stateChange.addListener((newState) => {
         switch (newState) {
           case SessionState.Establishing:
@@ -76,7 +74,6 @@ export default function App() {
             break;
         }
       });
-
       inviter
         .invite()
         .then(() => {
@@ -87,7 +84,6 @@ export default function App() {
         });
     });
   };
-
   const setupRemoteMedia = (session: Session) => {
     const remoteStream = new MediaStream();
     const localStream = new MediaStream();
@@ -105,7 +101,6 @@ export default function App() {
         }
       });
     }
-
     if (localVideoRef.current !== null) {
       localVideoRef.current.srcObject = localStream;
     }
@@ -120,6 +115,7 @@ export default function App() {
 
   return (
     <div className="App">
+      <div>{sipAccount.extension+"@"+sipAccount.domain}</div>
       <button onClick={handleRegister}>Register && Call {callDestination}</button>
       <input type="text" onChange={handleChangeDestination} />
       <div className="video-section">
