@@ -8,6 +8,7 @@ const sipAccount = {
   extension: "3568143622000",
   password: "test1234",
 };
+let userAgent: UserAgent, sessionCall: Session;
 const iceServer = [
   {
     username: "dc2d2894d5a9023620c467b0e71cfa6a35457e6679785ed6ae9856fe5bdfa269",
@@ -30,7 +31,6 @@ export default function App() {
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const [callDestination, setCallDestination] = useState("14131");
-  const [sessionCall, setSessionCall] = useState<Session>();
 
   const HandleRegister = () => {
     const userAgentOptions: UserAgentOptions = {
@@ -48,7 +48,7 @@ export default function App() {
       },
     };
 
-    const userAgent = new UserAgent(userAgentOptions);
+    userAgent = new UserAgent(userAgentOptions);
 
     userAgent.start().then(() => {
       const target = UserAgent.makeURI("sip:" + callDestination + "@" + sipAccount.domain);
@@ -89,7 +89,7 @@ export default function App() {
   const setupRemoteMedia = (session: Session) => {
     const remoteStream = new MediaStream();
     const localStream = new MediaStream();
-    setSessionCall(session);
+    sessionCall = session;
     if (session.sessionDescriptionHandler !== undefined) {
       // @ts-ignore
       session.sessionDescriptionHandler.peerConnection.getSenders().forEach((sender: RTCRtpSender) => {
@@ -115,8 +115,8 @@ export default function App() {
   };
   const HandleHangUp = () => {
     if (sessionCall === undefined) return;
+    userAgent.stop();
     sessionCall.bye();
-    setSessionCall(undefined);
     if (localVideoRef.current !== null && remoteVideoRef.current !== null) {
       localVideoRef.current.srcObject = null;
       remoteVideoRef.current.srcObject = null;
