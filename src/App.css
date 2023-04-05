@@ -41,9 +41,18 @@
   color: #888;
 }
 .video-section {
+  display: flex;
+  flex-direction: row;
   padding: 20px;
 }
-
+.local-video,
+.remote-video {
+  display: flex;
+  flex-direction: column;
+}
+.title-video {
+  font-weight: bold;
+}
 .local-video > video {
   background-color: black;
   width: 400px;
@@ -51,11 +60,29 @@
   border-radius: 10px;
   margin: 5px;
 }
-
 .remote-video > video {
   background-color: gray;
   width: 400px;
   height: 400px;
   border-radius: 10px;
   margin: 5px;
+}
+.sip-call {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+.sip-detail {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+}
+.call-destination-number {
+  background-color: #f9f9f9;
+  height: 35px;
+  font-size: 20px;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
 }

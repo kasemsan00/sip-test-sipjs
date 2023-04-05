@@ -115,14 +115,21 @@ export default function App() {
 
   return (
     <div className="App">
-      <div>{sipAccount.extension+"@"+sipAccount.domain}</div>
-      <button onClick={handleRegister}>Register && Call {callDestination}</button>
-      <input type="text" onChange={handleChangeDestination} />
+      <div className="sip-detail">
+        <div>Library SipJS</div>
+        <div>{sipAccount.extension + "@" + sipAccount.domain}</div>
+      </div>
+      <div className="sip-call">
+        <button onClick={handleRegister}>Register && Call</button>
+        <input className="call-destination-number" type="text" onChange={handleChangeDestination} placeholder={callDestination} />
+      </div>
       <div className="video-section">
         <div className="local-video">
+          <label className="title-video">Local</label>
           <video controls={false} ref={localVideoRef} autoPlay playsInline muted />
         </div>
         <div className="remote-video">
+          <label className="title-video">Remote</label>
           <video controls={false} ref={remoteVideoRef} autoPlay playsInline />
         </div>
       </div>
