@@ -13,8 +13,9 @@ export default function App() {
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const [callDestination, setCallDestination] = useState("14131");
+  const [sessionCall, setSessionCall] = useState<Session>();
 
-  const handleRegister = () => {
+  const HandleRegister = () => {
     const userAgentOptions: UserAgentOptions = {
       uri: UserAgent.makeURI("sip:" + sipAccount.extension + "@" + sipAccount.domain),
       authorizationPassword: sipAccount.password,
@@ -87,6 +88,7 @@ export default function App() {
   const setupRemoteMedia = (session: Session) => {
     const remoteStream = new MediaStream();
     const localStream = new MediaStream();
+    setSessionCall(session);
     if (session.sessionDescriptionHandler !== undefined) {
       // @ts-ignore
       session.sessionDescriptionHandler.peerConnection.getSenders().forEach((sender: RTCRtpSender) => {
@@ -109,19 +111,29 @@ export default function App() {
     }
   };
 
-  const handleChangeDestination = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const HandleChangeDestination = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCallDestination(event.target.value);
+  };
+  const HandleHangUp = () => {
+    if (sessionCall === undefined) return;
+    sessionCall.bye();
+    setSessionCall(undefined);
+    if (localVideoRef.current !== null && remoteVideoRef.current !== null) {
+      localVideoRef.current.srcObject = null;
+      remoteVideoRef.current.srcObject = null;
+    }
   };
 
   return (
-    <div className="App">
+    <div className="main">
       <div className="sip-detail">
         <div>Library SipJS</div>
         <div>{sipAccount.extension + "@" + sipAccount.domain}</div>
       </div>
       <div className="sip-call">
-        <button onClick={handleRegister}>Register && Call</button>
-        <input className="call-destination-number" type="text" onChange={handleChangeDestination} placeholder={callDestination} />
+        <button onClick={HandleRegister}>Register && Call</button>
+        <input className="call-destination-number" type="text" onChange={HandleChangeDestination} placeholder={callDestination} />
+        <button onClick={HandleHangUp}>Hangup</button>
       </div>
       <div className="video-section">
         <div className="local-video">
